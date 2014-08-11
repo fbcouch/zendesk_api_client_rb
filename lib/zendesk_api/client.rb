@@ -41,9 +41,10 @@ module ZendeskAPI
       else
         klass_as_const = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method))
         klass = class_from_namespace(klass_as_const)
-
-        @resource_cache[method][:class] ||= klass
-        @resource_cache[method][:cache].write(options.hash, ZendeskAPI::Collection.new(self, @resource_cache[method][:class], options))
+        if klass
+          @resource_cache[method][:class] ||= klass
+          @resource_cache[method][:cache].write(options.hash, ZendeskAPI::Collection.new(self, @resource_cache[method][:class], options))
+        end
       end
     end
 
